@@ -1,0 +1,11 @@
+version: "3.3"
+
+services:
+  bert-qa:
+    image: bert-qa
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - ./logs:/usr/src/bert-qa/logs
+      - ./artifacts:/usr/src/bert-qa/artifacts
