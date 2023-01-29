@@ -1,0 +1,38 @@
+[tool.poetry]
+name ="BERT QA on squad"
+version = "0.1.0"
+description = "BERT QA on squad"
+authors = ["author <i.pestretsov@outlook.com>"]
+
+[tool.poetry.dependencies]
+python = "3.8.10"
+pydantic = "^1.10.2"
+fastapi = "^0.88.0"
+uvicorn = "^0.20.0"
+torch = "^1.13.1"
+transformers = "^4.26.0"
+
+[tool.poetry.group.dev.dependencies]
+isort = "*"
+flake8 = "*"
+mypy = "^0.960"
+pylint = "^2.15.8"
+requests = "^2.28.1"
+pydocstyle = "^6.1.1"
+line-profiler-pycharm = "*"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+follow_imports = "silent"
+disallow_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.poetry.scripts]
+main = "src.main:main"
+
+[build-system]
+requires = ["poetry-core>=1.3.1"]
+build-backend = "poetry.core.masonry.api"
