@@ -16,7 +16,7 @@ class QAModel(nn.Module):
         cfg = AutoConfig.from_pretrained(BertQAConfig().artifacts_dir)
         self.bert = BertModel(cfg)
         self.drop_out = nn.Dropout(0.1)
-        self.l1 = nn.Linear(768 * 2, 2)
+        self.l1 = nn.Linear(768, 2)
         self.linear_stack = nn.Sequential(
             self.drop_out,
             self.l1,
@@ -35,15 +35,10 @@ class QAModel(nn.Module):
         :param attention_mask: tensor  with attention mask
         :param token_type_ids:  tensor with types of tokens (question or answer)
         """
-        model_output = self.bert(
-            input_ids,
-            attention_mask=attention_mask,
-            token_type_ids=token_type_ids,
-            output_hidden_states=True,
-        )
-        hidden_states = model_output[2]
-        out = torch.cat((hidden_states[-1], hidden_states[-3]), dim=-1)
-        logits = self.linear_stack(out)
+        model_output = self.bert(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids,
+                                 output_hidden_states=True)
+
+        logits = self.linear_stack(model_output.last_hidden_state)
 
         start_logits, end_logits = logits.split(1, dim=-1)
 
